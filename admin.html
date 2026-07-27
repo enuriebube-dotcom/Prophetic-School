@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Prophetic School 2026 — Applications (Admin)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --maroon:#4A1019; --maroon-deep:#380B12; --maroon-panel:#5A1620; --maroon-line:#6E2028;
+    --ember:#E4572E; --amber:#F2934C; --gold:#F6C453;
+    --ivory:#F6ECE2; --ivory-dim:#D9C3BC; --rose-mute:#B48A85;
+    --flame:linear-gradient(100deg,var(--gold) 0%,var(--amber) 45%,var(--ember) 100%);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:var(--maroon); color:var(--ivory); font-family:"Public Sans",system-ui,sans-serif; font-size:15px; -webkit-font-smoothing:antialiased; }
+  h1,h2{ font-family:"Cormorant Garamond",Georgia,serif; font-weight:600; line-height:1.1; }
+  .flame-text{ background:var(--flame); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+  .btn{ display:inline-flex; align-items:center; gap:.5em; font-weight:600; font-size:14px; padding:11px 20px; border-radius:999px; border:1px solid transparent; cursor:pointer; transition:transform .2s, box-shadow .2s, border-color .2s, color .2s; text-decoration:none; }
+  .btn-primary{ background:var(--flame); color:#3a0b10; box-shadow:0 8px 24px -10px rgba(244,150,60,.55); }
+  .btn-primary:hover{ transform:translateY(-2px); }
+  .btn-ghost{ background:transparent; color:var(--ivory-dim); border-color:var(--maroon-line); }
+  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold); }
+
+  /* ---- PIN gate ---- */
+  #gate{ position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center; background:var(--maroon); padding:24px; }
+  .gate-card{ width:100%; max-width:380px; text-align:center; }
+  .gate-card .mark{ font-family:"Cormorant Garamond",serif; font-size:30px; margin-bottom:8px; }
+  .gate-card p{ color:var(--rose-mute); font-size:14px; margin-bottom:26px; }
+  .gate-card input{ width:100%; text-align:center; letter-spacing:.3em; font-size:18px; color:var(--ivory); background:var(--maroon-panel); border:1px solid var(--maroon-line); border-radius:12px; padding:15px; margin-bottom:14px; }
+  .gate-card input:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(246,196,83,.16); }
+  .gate-card .btn{ width:100%; justify-content:center; padding:15px; font-size:15px; }
+  .gate-err{ color:#F08C7A; font-size:13px; min-height:18px; margin-top:12px; }
+
+  /* ---- Dashboard ---- */
+  #app{ display:none; max-width:1200px; margin:0 auto; padding:28px 24px 60px; }
+  .top{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; padding-bottom:22px; border-bottom:1px solid var(--maroon-line); margin-bottom:26px; }
+  .top h1{ font-size:30px; }
+  .top h1 small{ display:block; font-family:"Public Sans",sans-serif; font-size:12px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+  .top .actions{ display:flex; gap:10px; flex-wrap:wrap; }
+
+  .stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:26px; }
+  .stat{ background:var(--maroon-panel); border:1px solid var(--maroon-line); border-radius:14px; padding:20px 22px; }
+  .stat .fig{ font-family:"Cormorant Garamond",serif; font-size:42px; line-height:1; }
+  .stat .cap{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--rose-mute); margin-top:8px; }
+
+  .toolbar{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
+  #search{ flex:1; min-width:220px; font-size:14px; color:var(--ivory); background:var(--maroon-panel); border:1px solid var(--maroon-line); border-radius:10px; padding:11px 14px; }
+  #search::placeholder{ color:#8a6a67; }
+  #search:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(246,196,83,.16); }
+  .count{ font-size:13px; color:var(--rose-mute); }
+
+  .table-wrap{ overflow-x:auto; border:1px solid var(--maroon-line); border-radius:16px; }
+  table{ width:100%; border-collapse:collapse; font-size:14px; min-width:860px; }
+  thead th{ position:sticky; top:0; background:var(--maroon-deep); text-align:left; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); font-weight:600; padding:14px 16px; border-bottom:1px solid var(--maroon-line); white-space:nowrap; }
+  tbody td{ padding:14px 16px; border-bottom:1px solid var(--maroon-line); vertical-align:top; color:var(--ivory-dim); }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr:hover td{ background:rgba(110,32,40,.28); }
+  td .name{ color:var(--ivory); font-weight:600; }
+  td a{ color:var(--amber); text-decoration:none; }
+  td a:hover{ color:var(--gold); }
+  .idx{ color:var(--rose-mute); }
+
+  .empty{ text-align:center; padding:70px 20px; color:var(--rose-mute); }
+  .empty h2{ font-size:26px; color:var(--ivory); margin-bottom:8px; }
+  .banner{ background:var(--maroon-panel); border:1px solid var(--maroon-line); border-left:3px solid var(--amber); border-radius:12px; padding:16px 18px; font-size:14px; color:var(--ivory-dim); margin-bottom:22px; }
+  .banner b{ color:var(--gold); }
+
+  @media (max-width:640px){
+    .stats{ grid-template-columns:1fr; }
+    .top h1{ font-size:24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== PIN GATE ===== -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="mark">Prophetic&nbsp;<span class="flame-text">School</span></div>
+    <p>Applications dashboard. Enter your access PIN.</p>
+    <input id="pin" type="password" placeholder="Enter access PIN" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" />
+    <button class="btn btn-primary" id="unlock">Unlock</button>
+    <div class="gate-err" id="gateErr"></div>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div id="app">
+  <div class="top">
+    <h1><small>KB Grayce Ministries</small>Applications <span class="flame-text">2026</span></h1>
+    <div class="actions">
+      <button class="btn btn-ghost" id="refreshBtn">Refresh</button>
+      <button class="btn btn-primary" id="exportBtn">Export CSV</button>
+      <button class="btn btn-ghost" id="lockBtn">Lock</button>
+    </div>
+  </div>
+
+  <div id="notConfigured" class="banner" style="display:none;">
+    <b>Not connected yet.</b> Paste your Firebase keys into the <b>firebaseConfig</b> block in this file (the same project your landing page uses) to load applications.
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="fig flame-text" id="statTotal">0</div><div class="cap">Total applications</div></div>
+    <div class="stat"><div class="fig flame-text" id="statCountries">0</div><div class="cap">Countries represented</div></div>
+    <div class="stat"><div class="fig flame-text" id="statLatest">—</div><div class="cap">Latest application</div></div>
+  </div>
+
+  <div class="toolbar">
+    <input id="search" type="text" placeholder="Search name, email, country, city..." />
+    <span class="count" id="count"></span>
+  </div>
+
+  <div class="table-wrap" id="tableWrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>Submitted</th><th>Name</th><th>WhatsApp</th><th>Email</th><th>City</th><th>Country</th><th>Age</th><th>Heard about PS</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <div class="empty" id="empty" style="display:none;">
+    <h2>No applications yet</h2>
+    <p>They'll appear here the moment someone applies.</p>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+  /* ==================================================================
+     1) SET YOUR ACCESS PIN (change this before sharing the file)
+  ================================================================== */
+  const ADMIN_PIN = "grayce2026";
+
+  /* ==================================================================
+     2) PASTE THE SAME FIREBASE CONFIG YOU USE ON THE LANDING PAGE
+  ================================================================== */
+  const firebaseConfig = {
+    apiKey:            "AIzaSyAyWxDcp5OovYgfDi2nmih6jdlVY3viSIA",
+    authDomain:        "pray-station-1e097.firebaseapp.com",
+    databaseURL:       "https://pray-station-1e097-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId:         "pray-station-1e097",
+    storageBucket:     "pray-station-1e097.firebasestorage.app",
+    messagingSenderId: "785974807440",
+    appId:             "1:785974807440:web:0dae094315a729cfe8c115"
+  };
+  const DB_NODE = "prophetic-school/applications";   /* must match the landing page */
+  /* ================================================================== */
+
+  const configured = !firebaseConfig.apiKey.startsWith("YOUR_");
+  let db = null, records = [];
+
+  if (configured) {
+    try { firebase.initializeApp(firebaseConfig); db = firebase.database(); }
+    catch (e) { console.error("Firebase init failed:", e); }
+  }
+
+  /* ---- PIN gate ---- */
+  const gate = document.getElementById("gate");
+  const app  = document.getElementById("app");
+  const pin  = document.getElementById("pin");
+  const gateErr = document.getElementById("gateErr");
+
+  function unlock(){
+    if (pin.value.trim() === ADMIN_PIN){
+      gate.style.display = "none";
+      app.style.display = "block";
+      start();
+    } else {
+      gateErr.textContent = "That PIN doesn't match. Try again.";
+      pin.value = ""; pin.focus();
+    }
+  }
+  document.getElementById("unlock").addEventListener("click", unlock);
+  pin.addEventListener("keydown", e => { if (e.key === "Enter") unlock(); });
+  pin.focus();
+  document.getElementById("lockBtn").addEventListener("click", () => {
+    app.style.display = "none"; gate.style.display = "flex"; pin.value = ""; pin.focus();
+  });
+
+  /* ---- Data ---- */
+  function start(){
+    if (!configured){ document.getElementById("notConfigured").style.display = "block"; render(); return; }
+    load();
+  }
+  function load(){
+    db.ref(DB_NODE).on("value", snap => {
+      const val = snap.val() || {};
+      records = Object.keys(val).map(k => ({ id:k, ...val[k] }));
+      records.sort((a,b) => new Date(b.submittedAt||0) - new Date(a.submittedAt||0));
+      render();
+    }, err => {
+      console.error(err);
+      document.getElementById("empty").style.display = "block";
+      document.getElementById("empty").querySelector("h2").textContent = "Couldn't load applications";
+      document.getElementById("empty").querySelector("p").textContent = "Check your Firebase database rules allow reads from this node.";
+    });
+  }
+  document.getElementById("refreshBtn").addEventListener("click", () => { if (db){ db.ref(DB_NODE).off(); load(); } });
+
+  /* ---- Render ---- */
+  const search = document.getElementById("search");
+  search.addEventListener("input", render);
+
+  function fmtDate(iso){
+    if (!iso) return "—";
+    const d = new Date(iso);
+    if (isNaN(d)) return iso;
+    return d.toLocaleString("en-GB", { day:"2-digit", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" });
+  }
+  function esc(s){ return (s==null?"":String(s)).replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m])); }
+
+  function filtered(){
+    const q = search.value.trim().toLowerCase();
+    if (!q) return records;
+    return records.filter(r => [r.name,r.email,r.whatsapp,r.city,r.country,r.age,r.referral]
+      .some(v => (v||"").toString().toLowerCase().includes(q)));
+  }
+
+  function render(){
+    const list = filtered();
+    const rows = document.getElementById("rows");
+    const empty = document.getElementById("empty");
+    const tableWrap = document.getElementById("tableWrap");
+
+    document.getElementById("statTotal").textContent = records.length;
+    document.getElementById("statCountries").textContent = new Set(records.map(r => r.country).filter(Boolean)).size;
+    document.getElementById("statLatest").textContent = records.length
+      ? new Date(records[0].submittedAt).toLocaleDateString("en-GB",{day:"2-digit",month:"short"}) : "—";
+
+    document.getElementById("count").textContent = search.value.trim()
+      ? list.length + " of " + records.length + " shown" : records.length + " total";
+
+    if (records.length === 0){ tableWrap.style.display = "none"; empty.style.display = "block"; rows.innerHTML = ""; return; }
+    tableWrap.style.display = "block"; empty.style.display = "none";
+
+    rows.innerHTML = list.map((r,i) => `
+      <tr>
+        <td class="idx">${i+1}</td>
+        <td>${fmtDate(r.submittedAt)}</td>
+        <td class="name">${esc(r.name)}</td>
+        <td>${r.whatsapp ? `<a href="https://wa.me/${esc((r.whatsapp||"").replace(/[^0-9]/g,""))}" target="_blank" rel="noopener">${esc(r.whatsapp)}</a>` : "—"}</td>
+        <td><a href="mailto:${esc(r.email)}">${esc(r.email)}</a></td>
+        <td>${esc(r.city)||"—"}</td>
+        <td>${esc(r.country)||"—"}</td>
+        <td>${esc(r.age)||"—"}</td>
+        <td>${esc(r.referral)||"—"}</td>
+      </tr>`).join("");
+  }
+
+  /* ---- CSV export ---- */
+  document.getElementById("exportBtn").addEventListener("click", () => {
+    const list = filtered();
+    if (!list.length){ alert("Nothing to export yet."); return; }
+    const cols = [["submittedAt","Submitted"],["name","Full name"],["whatsapp","WhatsApp"],["email","Email"],["city","City"],["country","Country"],["age","Age bracket"],["referral","Heard about PS 2026"]];
+    const cell = v => `"${(v==null?"":String(v)).replace(/"/g,'""')}"`;
+    const csv = [cols.map(c => cell(c[1])).join(",")]
+      .concat(list.map(r => cols.map(c => cell(r[c[0]])).join(","))).join("\r\n");
+    const blob = new Blob(["\uFEFF"+csv], { type:"text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "prophetic-school-applications-" + new Date().toISOString().slice(0,10) + ".csv";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+</script>
+</body>
+</html>
