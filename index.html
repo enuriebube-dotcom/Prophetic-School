@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prophetic School 2026 — Registration Closed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --maroon: #7B1E22;
+      --maroon-deep: #5A1216;
+      --flame: #D9642A;
+      --ember: #E8934A;
+      --cream: #FBF3EC;
+      --page: #FFF8F3;
+      --ink: #43302B;
+      --muted: #7A6A63;
+      --line: #E8CDB8;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Manrope', system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(120% 80% at 50% -10%, rgba(217,100,42,0.10), transparent 60%),
+        var(--page);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 620px;
+      background: var(--cream);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 56px 44px 48px;
+      text-align: center;
+      box-shadow: 0 24px 60px -24px rgba(90,18,22,0.30);
+      position: relative;
+      overflow: hidden;
+      animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+
+    /* top flame bar */
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--maroon), var(--flame), var(--ember));
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .flame {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 28px;
+      display: grid;
+      place-items: center;
+    }
+
+    .flame svg { width: 100%; height: 100%; }
+
+    .eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--flame);
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 600;
+      font-size: clamp(2.1rem, 6vw, 3rem);
+      line-height: 1.08;
+      color: var(--maroon);
+      margin-bottom: 20px;
+    }
+
+    .lede {
+      font-size: 1.06rem;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 46ch;
+      margin: 0 auto 30px;
+    }
+
+    .divider {
+      width: 46px;
+      height: 2px;
+      background: var(--ember);
+      margin: 0 auto 30px;
+      border-radius: 2px;
+    }
+
+    .note {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 1.28rem;
+      color: var(--maroon-deep);
+      line-height: 1.5;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 44px 26px 36px; border-radius: 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="flame" aria-hidden="true">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 3c2 6-3 8-3 13 0 3 2 5 2 5s3-2 3-6c4 3 7 8 7 14a11 11 0 0 1-22 0c0-7 6-11 6-16 0-4-2-6-2-6s2 0 4 2c2-4 4-6 8-8-3 4-1 6-1 8z"
+              fill="url(#g)"/>
+        <defs>
+          <linearGradient id="g" x1="24" y1="3" x2="24" y2="45" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#E8934A"/>
+            <stop offset="0.55" stop-color="#D9642A"/>
+            <stop offset="1" stop-color="#7B1E22"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <p class="eyebrow">Prophetic School 2026</p>
+    <h1>Registration Is Now Closed</h1>
+    <p class="lede">
+      Thank you for your interest. We have reached capacity and are no longer
+      accepting new registrations for this cohort.
+    </p>
+    <div class="divider"></div>
+    <p class="note">Stay close. More is coming.</p>
+
+    <footer>KB grAYce Ministries</footer>
+  </main>
+</body>
+</html>
